@@ -1,10 +1,55 @@
 pipeline {
     agent any
+
+    options {
+        timestamps()
+
+        timeout(time:15, unit:'MINUTES')
+
+        buildDiscarder(logRotator(
+            numToKeepStr: '4',
+            daysToKeepStr: '7',
+            artifactNumToKeepStr:'30'
+        ))
+    }
+    environment {
+        AWS_REGION = 'us-east-1'
+        ECR_URL = '006262944085.dkr.ecr.us-east-1.amazonaws.com'
+        IMAGE_NAME = 'yasmin-checkpoint-home-exam-rest-ecr'
+    }
+
     stages {
-        stage('Say Hey') {
+        stage('Build') {
+            steps {
+                script {
+                    sh "docker build -t ${env.IMAGE_NAME} ."
+                }
+            }
+        }
+        stage('Tag') {
+            steps {
+                script {
+                    sh "docker tag ${env.IMAGE_NAME}:latest ${env.ECR_URL}/${env.IMAGE_NAME}:latest"
+                }
+            }
+        }
+        stage('Publish') {
+            steps {
+                script {
+                    sh "docker push ${env.ECR_URL}/${env.IMAGE_NAME}:latest"
+                }
+            }
+        }
+        stage('Deploy') {
             steps {
                 echo 'Hey'
             }
         }
     }
+    post {
+        always {
+            sh 'docker image prune -f'
+        }
+    }
 }
+
