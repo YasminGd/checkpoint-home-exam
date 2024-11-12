@@ -18,6 +18,7 @@ pipeline {
                 script {
                     dir('terraform') {
                         // Load .tfvars file
+                        sh "terraform init"
                         sh "terraform state list"
                         def tfvarsFile = readFile('terraform.tfvars')
                         def key = params.key_to_change
