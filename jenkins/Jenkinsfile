@@ -14,14 +14,15 @@ pipeline {
 
     stages {
         stage ("test") {
-            script {
-                echo "hi!"
+            steps {
+                script {
+                    echo "hi!"
+                }
             }
         }
     }
     post {
         always {
-            sh 'docker image prune -f'
             deleteDir()
         }
     }
