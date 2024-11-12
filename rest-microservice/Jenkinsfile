@@ -1,7 +1,4 @@
 pipeline {
-    // agent {
-    //     docker { image 'node:22.11.0-alpine3.20' }
-    // }
     agent any
     options {
         timestamps()
@@ -24,7 +21,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    docker.build("${IMAGE_NAME}:latest")
+                    sh "docker build -t ${IMAGE_NAME}:latest ."
                 }
             }
         }
@@ -64,6 +61,7 @@ pipeline {
     post {
         always {
             sh 'docker image prune -f'
+            deleteDir()
         }
     }
 }
