@@ -116,3 +116,8 @@ resource "aws_ecs_service" "consumer_service" {
   deployment_minimum_healthy_percent = 50
   deployment_maximum_percent         = 200
 }
+
+resource "aws_cloudwatch_log_group" "ecs_log_group" {
+  name              = "yasmin-logs"
+  retention_in_days = 7 # Set as per your requirements
+}

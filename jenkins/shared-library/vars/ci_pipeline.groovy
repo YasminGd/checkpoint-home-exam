@@ -4,8 +4,9 @@ def call(Map config = [:]) {
     def ecrUrl = config.get('ecrUrl')
     def imageName = config.get('imageName')
     def cdJob = config.get('cdJob', 'CD')
-    def infraImageVerProperty = config.get('infraImageVerProperty')
+    def microservice = config.get('microservice')
     def latestTag = '1.0.0'
+    def infraImageVerProperty = "${microservice}_image_tag"
 
     pipeline {
         agent any
@@ -24,7 +25,7 @@ def call(Map config = [:]) {
             stage('Build') {
                 steps {
                     script {
-                        dir("rest-microservice") {
+                        dir("${microservice}-microservice") {
                             sh "docker build -t ${IMAGE_NAME}:latest ."
                         }
                     }

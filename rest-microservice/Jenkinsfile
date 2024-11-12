@@ -5,5 +5,6 @@ ci_pipeline(
     ecrUrl: '006262944085.dkr.ecr.us-east-1.amazonaws.com',
     imageName: 'yasmin-checkpoint-home-exam-rest-ecr',
     cdJob: 'CD',
-    infraImageVerProperty: 'rest_image_tag'
+//    infraImageVerProperty: 'rest_image_tag',
+    microservice: 'rest'
 )
