@@ -17,8 +17,9 @@ pipeline {
             steps {
                 script {
                     echo "hi!"
-                    echo "key_to_change"
-                    echo "value"
+                    echo "${key_to_change}"
+                    echo "${value}"
+                    echo "ls"
                 }
             }
         }
