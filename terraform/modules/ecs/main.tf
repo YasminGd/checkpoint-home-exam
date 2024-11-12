@@ -86,14 +86,6 @@ resource "aws_ecs_task_definition" "consumer_task" {
         { name = "S3_BUCKET_NAME", value = var.s3_bucket_name },
         { name = "S3_FOLDER", value = "messages" }
       ]
-      logConfiguration = {
-        logDriver = "awslogs"
-        options = {
-          "awslogs-group"         = "yasmin-logs"
-          "awslogs-region"        = var.region
-          "awslogs-stream-prefix" = "sqs-to-s3-container"
-        }
-      }
     }
   ])
 }
@@ -117,7 +109,3 @@ resource "aws_ecs_service" "consumer_service" {
   deployment_maximum_percent         = 200
 }
 
-resource "aws_cloudwatch_log_group" "ecs_log_group" {
-  name              = "yasmin-logs"
-  retention_in_days = 7 # Set as per your requirements
-}
