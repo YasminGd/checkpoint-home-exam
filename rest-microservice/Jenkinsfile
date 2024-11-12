@@ -60,6 +60,7 @@ pipeline {
             steps {
                 script {
                     sh "docker push ${env.ECR_URL}/${env.IMAGE_NAME}:${latestTag}"
+                    sh "docker push ${env.ECR_URL}/${env.IMAGE_NAME}:latest"
                 }
             }
         }
