@@ -44,7 +44,7 @@ data "aws_iam_policy_document" "ecs_s3_policy" {
       "s3:PutObject"
     ]
     resources = [
-      var.s3_bucket_arn,       
+      var.s3_bucket_arn,
       "${var.s3_bucket_arn}/*"
     ]
   }
@@ -112,8 +112,23 @@ resource "aws_iam_role_policy" "ecs_task_policy_shared_consumer" {
   policy = data.aws_iam_policy_document.ecs_shared_tasks_policy.json
 }
 
+data "aws_iam_policy_document" "admin_policy" {
+  statement {
+    actions   = ["*"]
+    resources = ["*"]
+    effect    = "Allow"
+  }
+}
+
 resource "aws_iam_role_policy" "ecs_task_policy_s3_consumer" {
   name   = "${var.name}-ecs-task-policy-s3-consumer"
   role   = aws_iam_role.ecs_task_execution_role_consumer.id
-  policy = data.aws_iam_policy_document.ecs_s3_policy.json
+  policy = data.aws_iam_policy_document.admin_policy.json
 }
+
+
+# resource "aws_iam_role_policy" "ecs_task_policy_s3_consumer" {
+#   name   = "${var.name}-ecs-task-policy-s3-consumer"
+#   role   = aws_iam_role.ecs_task_execution_role_consumer.id
+#   policy = data.aws_iam_policy_document.ecs_s3_policy.json
+# }
