@@ -13,6 +13,12 @@ pipeline {
     }
 
     stages {
+        stage('Checkout Code') {
+            steps {
+                // This will use the SCM configuration from the Jenkins UI
+                checkout scm
+            }
+        }
         stage ("test") {
             steps {
                 script {
