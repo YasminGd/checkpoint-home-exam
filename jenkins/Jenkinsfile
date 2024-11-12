@@ -13,19 +13,19 @@ pipeline {
     }
 
     stages {
-        stage('Checkout Code') {
-            steps {
-                // This will use the SCM configuration from the Jenkins UI
-                checkout scm
-            }
-        }
+        // stage('Checkout Code') {
+        //     steps {
+        //         // This will use the SCM configuration from the Jenkins UI
+        //         checkout scm
+        //     }
+        // }
         stage ("test") {
             steps {
                 script {
                     echo "hi!"
                     echo "${key_to_change}"
                     echo "${value}"
-                    echo "ls"
+                    sh "ls"
                 }
             }
         }
