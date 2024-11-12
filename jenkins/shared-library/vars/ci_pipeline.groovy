@@ -42,7 +42,7 @@ def call(Map config = [:]) {
                     script {
                         latestTag = sh(script: "docker pull ${ECR_URL}/${IMAGE_NAME}:latest || true", returnStdout: true).trim()
                         
-                        if (latestTag) {
+                        try {
                             latestTag = sh(
                                 script: """
                                     docker images --format '{{.Tag}}' \${ECR_URL}/\${IMAGE_NAME} \
@@ -52,14 +52,13 @@ def call(Map config = [:]) {
                                 """, 
                                 returnStdout: true
                             ).trim()
-                            echo "last tag: ${latestTag}"
                             
                             def parts = latestTag.tokenize('.')
                             def lastDigit = (parts[-1] as int) + 1
                             latestTag = "${parts[0]}.${parts[1]}.${lastDigit}"
-                        } else {
+                        }catch {
                             latestTag = "1.0.0"
-                        }
+                        }    
 
                         echo "Next version tag: ${latestTag}"
                         sh "docker tag ${IMAGE_NAME}:latest ${ECR_URL}/${IMAGE_NAME}:${latestTag}"
