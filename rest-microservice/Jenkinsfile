@@ -18,25 +18,42 @@ pipeline {
         IMAGE_NAME = 'yasmin-checkpoint-home-exam-rest-ecr'
     }
 
+    tools {
+        docker 'docker'
+    }
+
     stages {
         stage('Build') {
             steps {
                 script {
-                    sh "docker build -t ${env.IMAGE_NAME} ."
+                    docker.build("${IMAGE_NAME}:latest")
                 }
             }
         }
         stage('Tag') {
             steps {
                 script {
-                    sh "docker tag ${env.IMAGE_NAME}:latest ${env.ECR_URL}/${env.IMAGE_NAME}:latest"
+                    def latestTag = sh(script: "docker pull ${ECR_URL}:latest || true", returnStdout: true).trim()
+                    
+                    if (latestTag) {
+                        latestTag = sh(script: "docker images --format '{{.Tag}}' <repository> | head -n 1", returnStdout: true).trim()
+                        
+                        def parts = latestTag.tokenize('.')
+                        def lastDigit = (parts[-1] as int) + 1
+                        latestTag = "${parts[0]}.${parts[1]}.${lastDigit}"
+                    } else {
+                        latestTag = "1.0.0"
+                    }
+
+                    echo "Next version tag: ${latestTag}"
+                    sh "docker tag ${IMAGE_NAME}:latest ${ECR_URL}/${IMAGE_NAME}:${latestTag}"
                 }
             }
         }
         stage('Publish') {
             steps {
                 script {
-                    sh "docker push ${env.ECR_URL}/${env.IMAGE_NAME}:latest"
+                    sh "docker push ${env.ECR_URL}/${env.IMAGE_NAME}:${latestTag}"
                 }
             }
         }
