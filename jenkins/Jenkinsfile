@@ -38,13 +38,15 @@ pipeline {
         stage('push changes to repo') {
             steps {
                 script { 
-                    sh """
-                        git config user.name "Jenkins"
-                        git config user.email "jenkins@jenkins.com"
-                        git add terraform/terraform.tfvars
-                        git commit -m "Update ${params.key_to_change} to ${params.value} in terraform.tfvars"
-                        git push origin HEAD
-                    """
+                    sshagent(['github-ssh']) { 
+                        sh """
+                            git config user.name "Jenkins"
+                            git config user.email "jenkins@jenkins.com"
+                            git add terraform/terraform.tfvars
+                            git commit -m "Update ${params.key_to_change} to ${params.value} in terraform.tfvars"
+                            git push origin HEAD
+                        """
+                    }
                 }
             }
         }
