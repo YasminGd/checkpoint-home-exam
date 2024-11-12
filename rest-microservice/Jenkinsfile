@@ -21,8 +21,9 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    sh "ls"
-                    sh "docker build -t ${IMAGE_NAME}:latest ."
+                    dir("rest-microservice") {
+                        sh "docker build -t ${IMAGE_NAME}:latest ."
+                    }
                 }
             }
         }
