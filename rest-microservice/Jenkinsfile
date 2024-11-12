@@ -38,7 +38,7 @@ pipeline {
         stage('Tag') {
             steps {
                 script {
-                    latestTag = sh(script: "docker pull ${ECR_URL}:latest || true", returnStdout: true).trim()
+                    latestTag = sh(script: "docker pull ${ECR_URL}/${IMAGE_NAME}:latest || true", returnStdout: true).trim()
                     
                     if (latestTag) {
                         latestTag = sh(script: "docker images --format '{{.Tag}}' <repository> | head -n 1", returnStdout: true).trim()
