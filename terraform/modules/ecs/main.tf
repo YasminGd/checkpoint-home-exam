@@ -80,7 +80,7 @@ resource "aws_ecs_task_definition" "consumer_task" {
     {
       name      = "sqs-to-s3-container"
       image     = "${var.ecr_consumer_repository_url}:${var.consumer_image_tag}"
-      essential = true
+      essential = false
       environment = [
         { name = "SQS_QUEUE_URL", value = var.queue_url },
         { name = "S3_BUCKET_NAME", value = var.s3_bucket_name },
