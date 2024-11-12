@@ -52,6 +52,7 @@ pipeline {
 
                     echo "Next version tag: ${latestTag}"
                     sh "docker tag ${IMAGE_NAME}:latest ${ECR_URL}/${IMAGE_NAME}:${latestTag}"
+                    sh "docker tag ${IMAGE_NAME}:latest ${ECR_URL}/${IMAGE_NAME}:latest"
                 }
             }
         }
