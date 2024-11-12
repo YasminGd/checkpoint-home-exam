@@ -9,17 +9,17 @@ resource "aws_ecs_task_definition" "rest_task" {
   cpu                      = var.task_cpu
   memory                   = var.task_memory
   execution_role_arn       = var.rest_iam_role_arn
-  task_role_arn            = var.rest_iam_role_arn 
-  
+  task_role_arn            = var.rest_iam_role_arn
+
   container_definitions = jsonencode([
     {
       name      = var.container_name
       image     = "${var.ecr_rest_repository_url}:${var.rest_image_tag}"
       essential = true
-      "environment": [
-        { "name": "SECRET_NAME", "value": "yasmin_checkpoint_home_exam_token" },
-        { "name": "REGION_NAME", "value": var.region },
-        { "name": "SQS_QUEUE_URL", "value": var.queue_url }
+      "environment" : [
+        { "name" : "SECRET_NAME", "value" : "yasmin_checkpoint_home_exam_token" },
+        { "name" : "REGION_NAME", "value" : var.region },
+        { "name" : "SQS_QUEUE_URL", "value" : var.queue_url }
       ]
       portMappings = [
         {
@@ -45,12 +45,12 @@ resource "aws_ecs_service" "rest_service" {
   cluster         = aws_ecs_cluster.cluster.id
   task_definition = aws_ecs_task_definition.rest_task.arn
   launch_type     = "FARGATE"
-  
+
   desired_count = 1
-  
+
   network_configuration {
-    subnets         = var.private_subnets_ids
-    security_groups = [var.rest_security_group_id]
+    subnets          = var.private_subnets_ids
+    security_groups  = [var.rest_security_group_id]
     assign_public_ip = false
   }
 
@@ -74,7 +74,7 @@ resource "aws_ecs_task_definition" "consumer_task" {
   cpu                      = var.task_cpu
   memory                   = var.task_memory
   execution_role_arn       = var.consumer_iam_role_arn
-  task_role_arn            = var.consumer_iam_role_arn 
+  task_role_arn            = var.consumer_iam_role_arn
 
   container_definitions = jsonencode([
     {
@@ -86,14 +86,6 @@ resource "aws_ecs_task_definition" "consumer_task" {
         { name = "S3_BUCKET_NAME", value = var.s3_bucket_name },
         { name = "S3_FOLDER", value = "messages" }
       ]
-      # logConfiguration = {
-      #   logDriver = "awslogs"
-      #   options = {
-      #     awslogs-group         = "/ecs/sqs-to-s3"
-      #     awslogs-region        = "us-east-1"
-      #     awslogs-stream-prefix = "ecs"
-      #   }
-      # }
     }
   ])
 }
@@ -104,12 +96,12 @@ resource "aws_ecs_service" "consumer_service" {
   cluster         = aws_ecs_cluster.cluster.id
   task_definition = aws_ecs_task_definition.consumer_task.arn
   launch_type     = "FARGATE"
-  
+
   desired_count = 1
-  
+
   network_configuration {
-    subnets         = var.private_subnets_ids
-    security_groups = [var.consumer_security_group_id]
+    subnets          = var.private_subnets_ids
+    security_groups  = [var.consumer_security_group_id]
     assign_public_ip = false
   }
 
