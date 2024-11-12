@@ -3,7 +3,7 @@
 ci_pipeline(
     awsRegion: 'us-east-1',
     ecrUrl: '006262944085.dkr.ecr.us-east-1.amazonaws.com',
-    imageName: 'yasmin-checkpoint-home-exam-rest-ecr',
+    imageName: 'yasmin-checkpoint-home-exam-consumer-ecr',
     cdJob: 'CD',
-    infraImageVerProperty: 'rest_image_tag'
+    infraImageVerProperty: 'consumer_image_tag'
 )

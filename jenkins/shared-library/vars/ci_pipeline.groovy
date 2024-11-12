@@ -1,10 +1,11 @@
 def call(Map config = [:]) {
     // Default values if not provided
-    def latestTag = config.get('latestTag', '1.0.0')
     def awsRegion = config.get('awsRegion', 'us-east-1')
     def ecrUrl = config.get('ecrUrl')
     def imageName = config.get('imageName')
     def cdJob = config.get('cdJob', 'CD')
+    def infraImageVerProperty = config.get('infraImageVerProperty')
+    def latestTag = '1.0.0'
 
     pipeline {
         agent any
@@ -78,7 +79,7 @@ def call(Map config = [:]) {
                 steps {
                     build job: cdJob,
                             parameters: [
-                                string(name: 'key_to_change', value: 'rest_image_tag'),
+                                string(name: 'key_to_change', value: "${infraImageVerProperty}"),
                                 string(name: 'value', value: "${latestTag}")
                             ],
                             wait: false

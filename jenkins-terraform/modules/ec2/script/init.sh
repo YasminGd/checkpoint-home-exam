@@ -8,20 +8,8 @@ sudo apt-get install -y docker-compose
 sudo systemctl start docker
 sudo usermod -aG docker ubuntu  # Add the 'ubuntu' user to the docker group for permissions
 
-# sudo mkdir -p $(pwd)/jenkins_home
-
-# sudo chown -R 1000:1000 $(pwd)/jenkins_home
-# sudo chmod -R 777 $(pwd)/jenkins_home
-
-
-# Pull and run Jenkins Docker container
-# sudo docker run -d --name jenkins -p 80:8080 -p 50000:50000 \
-# -v $(pwd)/jenkins_home:/var/jenkins_home \
-# jenkins/jenkins:jdk21
-
 # Ensure Docker starts on boot
 sudo systemctl enable docker
-
 #-----------------------------
 
 cd /home/ubuntu 
@@ -45,6 +33,9 @@ RUN curl -fsSL https://get.docker.com | sh
 RUN usermod -aG docker jenkins
 ARG HOST_DOCKER_GID
 RUN groupmod -g "\${HOST_DOCKER_GID}" docker
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+RUN unzip awscliv2.zip
+RUN ./aws/install
 USER jenkins
 EOF
 
