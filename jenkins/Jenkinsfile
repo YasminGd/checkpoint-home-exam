@@ -39,8 +39,10 @@ pipeline {
         stage('update infrastructure') {
             steps {
                 script {
-                    sh "terraform init"
-                    sh "terraform apply -auto-approve"
+                    dir('terraform') {
+                        sh "terraform init"
+                        sh "terraform apply -auto-approve"
+                    }
                 }
             }
         }
