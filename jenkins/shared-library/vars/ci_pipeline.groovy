@@ -56,7 +56,7 @@ def call(Map config = [:]) {
                             def parts = latestTag.tokenize('.')
                             def lastDigit = (parts[-1] as int) + 1
                             latestTag = "${parts[0]}.${parts[1]}.${lastDigit}"
-                        }catch {
+                        }catch (Exception e){
                             latestTag = "1.0.0"
                         }    
 
