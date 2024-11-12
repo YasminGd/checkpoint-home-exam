@@ -13,19 +13,38 @@ pipeline {
     }
 
     stages {
-        // stage('Checkout Code') {
-        //     steps {
-        //         // This will use the SCM configuration from the Jenkins UI
-        //         checkout scm
-        //     }
-        // }
         stage ("test") {
             steps {
                 script {
-                    echo "hi!"
-                    echo "${key_to_change}"
-                    echo "${value}"
-                    sh "ls"
+                    dir('terraform') {
+                        // Load .tfvars file
+                        def tfvarsFile = readFile('terraform.tfvars')
+                        def key = params.key_to_change
+                        def newValue = params.value
+
+                        def updatedContent = tfvarsFile.split('\n').collect { line ->
+                            if (line.startsWith("${key}=")) {
+                                return "${key} = \"${newValue}\""
+                            } else {
+                                return line
+                            }
+                        }.join('\n')
+
+                        writeFile(file: 'terraform.tfvars', text: updatedContent)
+                    }
+                }
+            }
+        }
+        stage('push changes to repo') {
+            steps {
+                script { 
+                    sh """
+                        git config user.name "Jenkins"
+                        git config user.email "jenkins@jenkins.com"
+                        git add terraform/terraform.tfvars
+                        git commit -m "Update ${key} to ${newValue} in terraform.tfvars"
+                        git push origin HEAD
+                    """
                 }
             }
         }
