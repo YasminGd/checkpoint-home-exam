@@ -1,3 +1,4 @@
+def latestTag = "1.0.0."
 pipeline {
     agent any
     options {
@@ -30,7 +31,7 @@ pipeline {
         stage('Tag') {
             steps {
                 script {
-                    def latestTag = sh(script: "docker pull ${ECR_URL}:latest || true", returnStdout: true).trim()
+                    latestTag = sh(script: "docker pull ${ECR_URL}:latest || true", returnStdout: true).trim()
                     
                     if (latestTag) {
                         latestTag = sh(script: "docker images --format '{{.Tag}}' <repository> | head -n 1", returnStdout: true).trim()
