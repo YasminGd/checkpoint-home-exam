@@ -15,9 +15,9 @@ def call(Map config = [:]) {
             buildDiscarder(logRotator(numToKeepStr: '4', daysToKeepStr: '7', artifactNumToKeepStr: '30'))
         }
         environment {
-            AWS_REGION = awsRegion
-            ECR_URL = ecrUrl
-            IMAGE_NAME = imageName
+            AWS_REGION = "${awsRegion}"
+            ECR_URL = "${ecrUrl}"
+            IMAGE_NAME = "${imageName}"
         }
 
         stages {
