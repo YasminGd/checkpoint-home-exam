@@ -75,7 +75,12 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                echo 'Hey'
+                    build job: 'CD',
+                            parameters: [
+                                string(name: 'key_to_change', value: 'rest_image_tag'),
+                                string(name: 'value', value: "${latestTag}")
+                            ],
+                            wait: false
             }
         }
     }
@@ -83,6 +88,12 @@ pipeline {
         always {
             sh 'docker image prune -f'
             deleteDir()
+        }
+        success {
+            echo "CI pipeline completed successfully"
+        }
+        failure {
+            echo "CI pipeline failed"
         }
     }
 }
