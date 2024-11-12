@@ -23,13 +23,14 @@ pipeline {
                         def newValue = params.value
 
                         def updatedContent = tfvarsFile.split('\n').collect { line ->
-                            if (line.startsWith("${key}=")) {
-                                return "${key} = \"${newValue}\""
+                            def matcher = line =~ /^(\s*${key}\s*=\s*).*$/
+                            if (matcher) {
+                                return "${matcher[0][1]}\"${newValue}\""  // Replace value while preserving initial formatting
                             } else {
-                                return line
+                                return line  // Keep the line unchanged if it doesn't match the key
                             }
                         }.join('\n')
-
+                        
                         writeFile(file: 'terraform.tfvars', text: updatedContent)
                     }
                 }
