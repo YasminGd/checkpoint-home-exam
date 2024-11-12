@@ -13,13 +13,11 @@ pipeline {
     }
 
     stages {
-        stage ("test") {
+        stage ("Change value in infrastructure") {
             steps {
                 script {
                     dir('terraform') {
                         // Load .tfvars file
-                        sh "terraform init"
-                        sh "terraform state list"
                         def tfvarsFile = readFile('terraform.tfvars')
                         def key = params.key_to_change
                         def newValue = params.value
@@ -35,6 +33,14 @@ pipeline {
 
                         writeFile(file: 'terraform.tfvars', text: updatedContent)
                     }
+                }
+            }
+        }
+        stage('update infrastructure') {
+            steps {
+                script {
+                    sh "terraform init"
+                    sh "terraform apply -auto-approve"
                 }
             }
         }
