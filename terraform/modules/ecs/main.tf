@@ -80,12 +80,20 @@ resource "aws_ecs_task_definition" "consumer_task" {
     {
       name      = "sqs-to-s3-container"
       image     = "${var.ecr_consumer_repository_url}:${var.consumer_image_tag}"
-      essential = false
+      essential = true
       environment = [
         { name = "SQS_QUEUE_URL", value = var.queue_url },
         { name = "S3_BUCKET_NAME", value = var.s3_bucket_name },
         { name = "S3_FOLDER", value = "messages" }
       ]
+      logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          "awslogs-group"         = "yasmin-logs"
+          "awslogs-region"        = var.region
+          "awslogs-stream-prefix" = "sqs-to-s3-container"
+        }
+      }
     }
   ])
 }
