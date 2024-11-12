@@ -18,6 +18,7 @@ pipeline {
                 script {
                     dir('terraform') {
                         // Load .tfvars file
+                        sh "terraform state list"
                         def tfvarsFile = readFile('terraform.tfvars')
                         def key = params.key_to_change
                         def newValue = params.value
@@ -30,7 +31,7 @@ pipeline {
                                 return line  // Keep the line unchanged if it doesn't match the key
                             }
                         }.join('\n')
-                        
+
                         writeFile(file: 'terraform.tfvars', text: updatedContent)
                     }
                 }
