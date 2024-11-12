@@ -5,9 +5,9 @@ import os
 
 app = Flask(__name__)
 
-secret_name = os.environ.get("SECRET_NAME", "default_secret_name")
+secret_name = os.environ.get("SECRET_NAME", "secret_name")
 region_name = os.environ.get("REGION_NAME", "us-east-1")
-sqs_queue_url = os.environ.get("SQS_QUEUE_URL", "default_sqs_queue_url")
+sqs_queue_url = os.environ.get("SQS_QUEUE_URL", "sqs_queue_url")
 
 session = boto3.session.Session()
 secret_client = session.client(
