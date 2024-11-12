@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+    options {
+        timestamps()
+
+        timeout(time:60, unit:'MINUTES')
+
+    }
+
+    parameters {
+        string(name: 'key_to_change', description: 'The key to modify during deployment')
+        string(name: 'value', description: 'The new value for the key')
+    }
+
+    stages {
+        stage ("test") {
+            script {
+                echo "hi!"
+            }
+        }
+    }
+    post {
+        always {
+            sh 'docker image prune -f'
+            deleteDir()
+        }
+    }
+}
+
