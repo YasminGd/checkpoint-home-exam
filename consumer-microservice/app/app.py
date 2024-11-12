@@ -1,11 +1,12 @@
 import boto3
 import time
 from botocore.exceptions import ClientError
+import os
 
 # AWS Configurations
-sqs_queue_url = "https://sqs.us-east-1.amazonaws.com/YOUR_ACCOUNT_ID/YOUR_QUEUE_NAME"
-s3_bucket_name = "your-s3-bucket-name"
-s3_folder = "your-s3-folder"  # Specify the path where messages should be stored in S3
+sqs_queue_url = os.getenv("SQS_QUEUE_URL")
+s3_bucket_name = os.getenv("S3_BUCKET_NAME")
+s3_folder = os.getenv("S3_FOLDER", "default-folder") 
 
 # Initialize AWS clients
 sqs_client = boto3.client('sqs', region_name='us-east-1')
