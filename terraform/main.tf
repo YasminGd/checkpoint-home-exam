@@ -9,11 +9,11 @@ module "ecs" {
   task_cpu                    = "256"
   task_memory                 = "512"
   container_name              = "rest-to-sqs-container"
-  rest_image_tag              = "latest"
-  consumer_image_tag          = "latest"
+  rest_image_tag              = var.rest_image_tag
+  consumer_image_tag          = var.consumer_image_tag
   container_port              = var.rest_task_port
   log_group                   = "/ecs/my-service"
-  region                      = "us-east-1"
+  region                      = var.region
   rest_security_group_id      = module.security.rest_sg_id
   consumer_security_group_id  = module.security.consumer_sg_id
   target_group_arn            = module.network.target_group_arn
