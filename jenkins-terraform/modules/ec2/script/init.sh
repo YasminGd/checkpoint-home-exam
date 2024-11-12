@@ -25,17 +25,24 @@ EOF
 cat << EOF > Dockerfile
 ARG JENKINS_IMAGE
 ARG JENKINS_TAG
-FROM \${JENKINS_IMAGE}:\${JENKINS_TAG}
+FROM ${JENKINS_IMAGE}:${JENKINS_TAG}
 COPY plugins.txt plugins.txt
 RUN jenkins-plugin-cli --plugin-file plugins.txt
 USER root
 RUN curl -fsSL https://get.docker.com | sh
 RUN usermod -aG docker jenkins
 ARG HOST_DOCKER_GID
-RUN groupmod -g "\${HOST_DOCKER_GID}" docker
+RUN groupmod -g "${HOST_DOCKER_GID}" docker
+#install aws
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 RUN unzip awscliv2.zip
 RUN ./aws/install
+#install terraform
+RUN apt-get install wget -y
+RUN apt install -y lsb-release
+RUN wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+RUN echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list
+RUN apt update && apt install terraform -y
 USER jenkins
 EOF
 
