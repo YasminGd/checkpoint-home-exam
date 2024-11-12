@@ -41,7 +41,10 @@ pipeline {
                     latestTag = sh(script: "docker pull ${ECR_URL}/${IMAGE_NAME}:latest || true", returnStdout: true).trim()
                     
                     if (latestTag) {
+                        latestTag = sh(script: "docker images --format '{{.Tag}}' ${ECR_URL}/${IMAGE_NAME}", returnStdout: true).trim()
+                        echo "tags: ${latestTag}"
                         latestTag = sh(script: "docker images --format '{{.Tag}}' ${ECR_URL}/${IMAGE_NAME} | head -n 1", returnStdout: true).trim()
+                        echo "last tag: ${latestTag}"
                         
                         def parts = latestTag.tokenize('.')
                         def lastDigit = (parts[-1] as int) + 1
