@@ -4,8 +4,8 @@ from botocore.exceptions import ClientError
 import os
 
 # AWS Configurations
-sqs_queue_url = os.getenv("SQS_QUEUE_URL")
-s3_bucket_name = os.getenv("S3_BUCKET_NAME")
+sqs_queue_url = os.getenv("SQS_QUEUE_URL", "test-queue-url")
+s3_bucket_name = os.getenv("S3_BUCKET_NAME", "test-bucket-name")
 s3_folder = os.getenv("S3_FOLDER", "default-folder") 
 
 # Initialize AWS clients
