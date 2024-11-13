@@ -32,7 +32,7 @@ connects with:
 
 To build just use the docker command
 ```bash
-docker build -t consumer-microservice .
+docker build -t rest-microservice .
 ```
 Or in the app folder create a venv, install requirements and run the app as python
  ```bash
@@ -51,6 +51,9 @@ Run by changing the values in terraform.tfvars to what you need using terraform 
  ```bash
 terraform apply
 ```
+Then you can access jenkins with ```http://IP_OF_EC2```
+username and password are both admin
+
 ⚠️ **Warning** - state is stored in a pre-existing s3 bucket and locked by a pre-existing dynamoDB table. either create them seperately before running terrafrom apply or use the remote-state module in the folder. Change the names in `modules/remote-state/main.tf` to what you need and make sure that the backend names match in `providers.tf`
 
 Run by using these commands in `modules/remote-state`:
@@ -70,5 +73,6 @@ Run by using these commands in `modules/remote-state`:
 terraform init
 terraform apply
 ```
-
-
+# Important Note
+The token that gets pulled by the rest microservice from AWS secret manager is the only thing that doesn't get created by terraform due to security reasons.
+You have to create it manually BEFORE using ``teraform apply`` and save it's arn in ```terraform/terraform.tfvars```.
