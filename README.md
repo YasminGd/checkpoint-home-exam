@@ -78,3 +78,5 @@ terraform apply
 # Important Note
 The token that gets pulled by the rest microservice from AWS secret manager is the only thing that doesn't get created by terraform due to security reasons.
 You have to create it manually BEFORE using ``teraform apply`` and save it's arn in ```terraform/terraform.tfvars```.
+
+Also, make sure to run this project in us-east-1 or change the ami value in ```terraform/terraform.tfvars``` - amis cannot be accessed between regions. 
