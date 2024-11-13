@@ -32,7 +32,7 @@ connects with:
 
 To build just use the docker command
 ```bash
-docker build -t rest-microservice .
+docker build -t consumer-microservice .
 ```
 Or in the app folder create a venv, install requirements and run the app as python
  ```bash
