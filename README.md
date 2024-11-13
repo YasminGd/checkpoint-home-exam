@@ -1,3 +1,4 @@
+
 # Read Me
 
 This is my home assignment for checkpoint, It has two main main parts: an ecs cluster with the microservices and a jenkins machine to perform ci/cd.
@@ -53,6 +54,7 @@ terraform apply
 ```
 Then you can access jenkins with ```http://IP_OF_EC2```
 username and password are both admin
+**If Jenkins runs slowly go to Manage Jenkins -> System -> Jenkins URL and change the value to the current ec2 url, that should fix that issue**
 
 ⚠️ **Warning** - state is stored in a pre-existing s3 bucket and locked by a pre-existing dynamoDB table. either create them seperately before running terrafrom apply or use the remote-state module in the folder. Change the names in `modules/remote-state/main.tf` to what you need and make sure that the backend names match in `providers.tf`
 
