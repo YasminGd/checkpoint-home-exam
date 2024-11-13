@@ -14,8 +14,4 @@ map_public_ip_on_launch   = true
 rest_task_port            = 5000
 secret_manager_arn        = "arn:aws:secretsmanager:us-east-1:006262944085:secret:yasmin_checkpoint_home_exam_token-VEhv7I"
 rest_image_tag            = "1.0.20"
-<<<<<<< HEAD
-consumer_image_tag        = "1.0.10"
-=======
 consumer_image_tag        = "1.0.11"
->>>>>>> 2377be813e1867ab34de389539829d329952d103

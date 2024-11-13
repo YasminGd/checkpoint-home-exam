@@ -24,7 +24,7 @@ module "ec2_instance" {
   subnet_id          = module.network.subnet_id
   security_group_ids = [module.security_group.security_group_id]
   name               = var.name
-  admin_role_name         = module.iam.admin_role_name
+  admin_role_name    = module.iam.admin_role_name
 }
 
 module "iam" {

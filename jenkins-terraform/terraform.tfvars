@@ -8,4 +8,4 @@ tags = {
 region        = "us-east-1"
 name          = "yasmin_checkpoint_home_exam"
 instance_type = "t3a.medium"
-ami           = "ami-0866a3c8686eaeeba"
+ami           = "ami-0740dff772a6ea1d7"
