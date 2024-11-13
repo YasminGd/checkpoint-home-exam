@@ -52,9 +52,9 @@ Run by changing the values in terraform.tfvars to what you need using terraform 
  ```bash
 terraform apply
 ```
-Then you can access jenkins with ```http://IP_OF_EC2```. 
-username and password are both admin. 
-**If Jenkins runs slowly go to Manage Jenkins -> System -> Jenkins URL and change the value to the current ec2 url, that should fix that issue**.
+Then you can access jenkins with ```http://IP_OF_EC2```
+username and password are both admin
+**If Jenkins runs slowly go to Manage Jenkins -> System -> Jenkins URL and change the value to the current ec2 url, that should fix that issue**
 
 ⚠️ **Warning** - state is stored in a pre-existing s3 bucket and locked by a pre-existing dynamoDB table. either create them seperately before running terrafrom apply or use the remote-state module in the folder. Change the names in `modules/remote-state/main.tf` to what you need and make sure that the backend names match in `providers.tf`
 
@@ -75,8 +75,10 @@ Run by using these commands in `modules/remote-state`:
 terraform init
 terraform apply
 ```
+# Deployment Order
+1. the state backends of both ```terraform``` and ```jenkins-terraform```
+2. ```terraform```  + ```jenkins-terraform```
+
 # Important Note
 The token that gets pulled by the rest microservice from AWS secret manager is the only thing that doesn't get created by terraform due to security reasons.
 You have to create it manually BEFORE using ``teraform apply`` and save it's arn in ```terraform/terraform.tfvars```.
-
-Also, make sure to run this project in us-east-1 or change the ami value in ```terraform/terraform.tfvars``` - amis cannot be accessed between regions. 
