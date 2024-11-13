@@ -1,10 +1,8 @@
 
 tags = {
-  stage        = "test"
-  owner        = "yasmin.gudha@develeap.com"
-  project      = "checkpoint_home_exam"
-  "start date" = "10/11/2024"
-  "end date"   = "30/11/2024"
+  Objective  = "checkpoint_home_exam"
+  Email      = "yasmin.gudha@develeap.com"
+  Expiration = "20241130"
 }
 
 name                      = "yasmin-checkpoint-home-exam"
